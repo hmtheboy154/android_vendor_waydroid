@@ -1,0 +1,40 @@
+From 9e03de9d162336a4e6a0b4c7781b8e0c415895b0 Mon Sep 17 00:00:00 2001
+From: Erfan Abdi <erfangplus@gmail.com>
+Date: Thu, 26 Aug 2021 13:52:27 +0800
+Subject: [PATCH 1/2] lmodroid: Add more build types
+
+Change-Id: I6cf73bdd7bcf7fde9687d3fd96fde8dcfd01841a
+---
+ cust/build/version.mk | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/cust/build/version.mk b/cust/build/version.mk
+index ee3d5d20..97a1c4d1 100644
+--- a/cust/build/version.mk
++++ b/cust/build/version.mk
+@@ -31,13 +31,21 @@ ifndef LMODROID_BUILDTYPE
+ endif
+ 
+ # Filter out random types, so it'll reset to UNOFFICIAL
+-ifeq ($(filter RELEASE NIGHTLY WEEKLY EXPERIMENTAL,$(LMODROID_BUILDTYPE)),)
++ifeq ($(filter RELEASE NIGHTLY WEEKLY EXPERIMENTAL VANILLA FOSS GAPPS,$(LMODROID_BUILDTYPE)),)
+     LMODROID_BUILDTYPE := UNOFFICIAL
+ endif
+ 
+ DATE_YEAR := $(shell date -u +%Y)
+ DATE_MONTH := $(shell date -u +%m)
+ DATE_DAY := $(shell date -u +%d)
++ifeq ($(LMODROID_BUILDTYPE), GAPPS)
++    WITH_GMS := true
++    WITH_GMS_MINIMAL := true
++endif
++
++ifeq ($(LMODROID_BUILDTYPE), FOSS)
++    $(call inherit-product-if-exists, vendor/foss/foss.mk)
++endif
+ ifeq ($(filter UNOFFICIAL,$(LMODROID_BUILDTYPE)),)
+     BUILD_DATE := $(DATE_YEAR)$(DATE_MONTH)$(DATE_DAY)
+ else
+-- 
+2.34.1
+

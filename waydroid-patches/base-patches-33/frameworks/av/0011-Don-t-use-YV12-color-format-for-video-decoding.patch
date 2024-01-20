@@ -1,7 +1,7 @@
-From 074d562b1587caa0969257abb3855e35469625e4 Mon Sep 17 00:00:00 2001
+From 8295221958788da6f5348006f5dc2edc86b01e06 Mon Sep 17 00:00:00 2001
 From: Chih-Wei Huang <cwhuang@linux.org.tw>
 Date: Mon, 23 Nov 2015 00:46:22 +0800
-Subject: [PATCH 11/27] Don't use YV12 color format for video decoding
+Subject: [PATCH 11/28] Don't use YV12 color format for video decoding
 
 YV12 is not supported by Mesa yet. This has to be reverted
 when we can enable h/w decoder.
@@ -34,5 +34,5 @@ index 4711315615..f2a0ba8c9a 100644
              }
              case OMX_COLOR_Format24bitRGB888:
 -- 
-2.40.0
+2.34.1
 

@@ -1,7 +1,7 @@
-From 6c8c66d12229b09995245c97220e37cf6beb87e6 Mon Sep 17 00:00:00 2001
+From 1c263e2835800cd0e1dff00ac33844d1b9863c95 Mon Sep 17 00:00:00 2001
 From: Daniel Charles <daniel.charles@intel.com>
 Date: Wed, 9 May 2012 11:28:37 -0700
-Subject: [PATCH 09/27] Change max width and height supported by H.263 decoder.
+Subject: [PATCH 09/28] Change max width and height supported by H.263 decoder.
 
 Currently this is set to CIF PAL resolution (352x288) which
 won't calculate the actual output buffer size for higher resolutions
@@ -36,5 +36,5 @@ index a4b3e2f434..ce298043cf 100644
              kNumInputBuffers,
              352 * 288 * 3 / 2 /* minInputBufferSize */,
 -- 
-2.40.0
+2.34.1
 

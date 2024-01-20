@@ -1,7 +1,7 @@
-From 4204b2d5d288201e190309be0a3d3959aa29ee9e Mon Sep 17 00:00:00 2001
+From 5bfefda2048668f1c978941b7e154195cec0041f Mon Sep 17 00:00:00 2001
 From: Michael Goffioul <michael.goffioul@lincor.com>
 Date: Fri, 4 Oct 2019 20:11:48 -0400
-Subject: [PATCH 18/27] Disable CFI
+Subject: [PATCH 18/28] Disable CFI
 
 The presence of CFI sanitizer makes the corresponding libraries to be
 missing from the com.android.media.swcodec APEX, when building for x86.
@@ -90,5 +90,5 @@ index ca17117ff2..1bc0918236 100644
  }
  
 -- 
-2.40.0
+2.34.1
 

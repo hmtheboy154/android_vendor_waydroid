@@ -1,7 +1,7 @@
-From c90c980e253fc0f2060164800d5a6176cbe56162 Mon Sep 17 00:00:00 2001
+From e175792092d54e445e4daa38c0ba33b3b461b4d0 Mon Sep 17 00:00:00 2001
 From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 Date: Wed, 24 Oct 2018 08:23:52 +0200
-Subject: [PATCH 04/10] EventHub: Add wayland inputs support
+Subject: [PATCH 4/9] EventHub: Add wayland inputs support
 
 Co-authored-by: Erfan Abdi <erfangplus@gmail.com>
 Co-authored-by: Alessandro Astone <ales.astone@gmail.com>
@@ -12,10 +12,10 @@ Change-Id: I6b3213eb650395b658b9216c0e11dfb2699b59ef
  2 files changed, 167 insertions(+), 6 deletions(-)
 
 diff --git a/services/inputflinger/reader/EventHub.cpp b/services/inputflinger/reader/EventHub.cpp
-index 1b58284831..ba76cc4ede 100644
+index fecf49137f..503db33fe9 100644
 --- a/services/inputflinger/reader/EventHub.cpp
 +++ b/services/inputflinger/reader/EventHub.cpp
-@@ -672,6 +672,28 @@ static void ensureProcessCanBlockSuspend() {
+@@ -681,6 +681,28 @@ static void ensureProcessCanBlockSuspend() {
  
  const int EventHub::EPOLL_MAX_EVENTS;
  
@@ -44,7 +44,7 @@ index 1b58284831..ba76cc4ede 100644
  EventHub::EventHub(void)
        : mBuiltInKeyboardId(NO_BUILT_IN_KEYBOARD),
          mNextDeviceId(1),
-@@ -791,6 +813,9 @@ void EventHub::getConfiguration(int32_t deviceId, PropertyMap* outConfiguration)
+@@ -800,6 +822,9 @@ void EventHub::getConfiguration(int32_t deviceId, PropertyMap* outConfiguration)
  
  status_t EventHub::getAbsoluteAxisInfo(int32_t deviceId, int axis,
                                         RawAbsoluteAxisInfo* outAxisInfo) const {
@@ -54,7 +54,7 @@ index 1b58284831..ba76cc4ede 100644
      outAxisInfo->clear();
  
      if (axis >= 0 && axis <= ABS_MAX) {
-@@ -799,12 +824,58 @@ status_t EventHub::getAbsoluteAxisInfo(int32_t deviceId, int axis,
+@@ -808,12 +833,58 @@ status_t EventHub::getAbsoluteAxisInfo(int32_t deviceId, int axis,
          Device* device = getDeviceLocked(deviceId);
          if (device != nullptr && device->hasValidFd() && device->absBitmask.test(axis)) {
              struct input_absinfo info;
@@ -117,7 +117,7 @@ index 1b58284831..ba76cc4ede 100644
              if (info.minimum != info.maximum) {
                  outAxisInfo->valid = true;
                  outAxisInfo->minValue = info.minimum;
-@@ -1941,6 +2012,8 @@ void EventHub::openDeviceLocked(const std::string& devicePath) {
+@@ -1950,6 +2021,8 @@ void EventHub::openDeviceLocked(const std::string& devicePath) {
      }
  
      char buffer[80];
@@ -126,7 +126,7 @@ index 1b58284831..ba76cc4ede 100644
  
      ALOGV("Opening device: %s", devicePath.c_str());
  
-@@ -1950,8 +2023,24 @@ void EventHub::openDeviceLocked(const std::string& devicePath) {
+@@ -1959,8 +2032,24 @@ void EventHub::openDeviceLocked(const std::string& devicePath) {
          return;
      }
  
@@ -151,7 +151,7 @@ index 1b58284831..ba76cc4ede 100644
      // Get device name.
      if (ioctl(fd, EVIOCGNAME(sizeof(buffer) - 1), &buffer) < 1) {
          ALOGE("Could not get device name for %s: %s", devicePath.c_str(), strerror(errno));
-@@ -2005,6 +2094,7 @@ void EventHub::openDeviceLocked(const std::string& devicePath) {
+@@ -2014,6 +2103,7 @@ void EventHub::openDeviceLocked(const std::string& devicePath) {
          buffer[sizeof(buffer) - 1] = '\0';
          identifier.uniqueId = buffer;
      }
@@ -159,7 +159,7 @@ index 1b58284831..ba76cc4ede 100644
  
      // Fill in the descriptor.
      assignDescriptorLocked(identifier);
-@@ -2023,8 +2113,8 @@ void EventHub::openDeviceLocked(const std::string& devicePath) {
+@@ -2032,8 +2122,8 @@ void EventHub::openDeviceLocked(const std::string& devicePath) {
      ALOGV("  location:   \"%s\"\n", identifier.location.c_str());
      ALOGV("  unique id:  \"%s\"\n", identifier.uniqueId.c_str());
      ALOGV("  descriptor: \"%s\"\n", identifier.descriptor.c_str());
@@ -170,7 +170,7 @@ index 1b58284831..ba76cc4ede 100644
  
      // Load the configuration file for the device.
      device->loadConfigurationLocked();
-@@ -2060,6 +2150,7 @@ void EventHub::openDeviceLocked(const std::string& devicePath) {
+@@ -2069,6 +2159,7 @@ void EventHub::openDeviceLocked(const std::string& devicePath) {
          }
      }
  
@@ -178,7 +178,7 @@ index 1b58284831..ba76cc4ede 100644
      // Figure out the kinds of events the device reports.
      device->readDeviceBitMask(EVIOCGBIT(EV_KEY, 0), device->keyBitmask);
      device->readDeviceBitMask(EVIOCGBIT(EV_ABS, 0), device->absBitmask);
-@@ -2235,6 +2326,73 @@ void EventHub::openDeviceLocked(const std::string& devicePath) {
+@@ -2245,6 +2336,73 @@ void EventHub::openDeviceLocked(const std::string& devicePath) {
          device->setLedForControllerLocked();
      }
  
@@ -267,5 +267,5 @@ index 130c55639b..f4a9a0848d 100644
      inline size_t bytes() { return (BITS + CHAR_BIT - 1) / CHAR_BIT; }
      /* Returns true if array contains any non-zero bit from the range defined by start and end
 -- 
-2.39.2
+2.34.1
 

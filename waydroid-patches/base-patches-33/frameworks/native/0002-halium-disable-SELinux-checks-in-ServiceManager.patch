@@ -1,7 +1,7 @@
-From b94e225cc0ba6c6c4eeb5adaca8b054f1d7fbcaf Mon Sep 17 00:00:00 2001
+From 6824e9754798ee6b80c78633f3bcd60060f9b8af Mon Sep 17 00:00:00 2001
 From: TheKit <nekit1000@gmail.com>
 Date: Sun, 7 Mar 2021 17:13:31 +0200
-Subject: [PATCH 02/10] (halium) disable SELinux checks in ServiceManager
+Subject: [PATCH 2/9] (halium) disable SELinux checks in ServiceManager
 
 Change-Id: Ida8e91453db58b1123468931c94d4a40d273b0b3
 ---
@@ -56,5 +56,5 @@ index b7e520f2f1..aadb6da7ac 100644
      if (selabel_lookup(getSehandle(), &tctx, name.c_str(), SELABEL_CTX_ANDROID_SERVICE) != 0) {
          LOG(ERROR) << "SELinux: No match for " << name << " in service_contexts.\n";
 -- 
-2.39.2
+2.34.1
 

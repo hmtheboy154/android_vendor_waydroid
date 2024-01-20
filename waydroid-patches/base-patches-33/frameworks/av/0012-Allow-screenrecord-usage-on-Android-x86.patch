@@ -1,7 +1,7 @@
-From f24c11f5080e79f36867254e7c79c4bfd0c75aa3 Mon Sep 17 00:00:00 2001
+From c04d5f2833179db736544fe6ce5b80862fb754a5 Mon Sep 17 00:00:00 2001
 From: Paulo Sergio Travaglia <pstglia@gmail.com>
 Date: Sun, 17 Jan 2016 15:23:06 -0200
-Subject: [PATCH 12/27] Allow screenrecord usage on Android-x86
+Subject: [PATCH 12/28] Allow screenrecord usage on Android-x86
 
 Selects a supported color format for screenrecord (
 OMX_COLOR_FormatYUV420Planar instead of OMX_COLOR_FormatAndroidOpaque)
@@ -87,5 +87,5 @@ index 11e563cdc2..15975fb397 100644
  
              return OMX_ErrorNone;
 -- 
-2.40.0
+2.34.1
 
